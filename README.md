@@ -1,2 +1,2 @@
 # PathFinding-Visualizer
-Pathfinding visualizer using Kotlin's Compose Desktop
+Pathfinding Visualizer using Kotlin's Compose Desktop
