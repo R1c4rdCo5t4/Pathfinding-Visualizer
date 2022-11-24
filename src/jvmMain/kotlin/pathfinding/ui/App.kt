@@ -7,16 +7,21 @@ import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.AlignmentLine
 
 
 @Composable
 @Preview
 fun App(title: String) {
-    Title(title.uppercase())
-    Buttons()
-    Grid(lines = 30, columns = 18, cellSize = 24.dp)
-    Credits()
+    Column{
+        Title(title.uppercase())
+        Buttons()
+        Grid(lines = 18, columns = 30, cellSize = 24.dp)
+        Credits()
+    }
+
 }
 
 
@@ -24,7 +29,10 @@ fun App(title: String) {
 fun Title(title: String){
     Row(
         Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .absolutePadding(0.dp,20.dp,0.dp,0.dp)
+        ,
+
         horizontalArrangement = Arrangement.Center
     ) {
         Text(
@@ -41,8 +49,7 @@ fun Title(title: String){
 fun Credits(){
     Row(
         Modifier
-            .fillMaxWidth()
-            .offset(y=545.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ){ Text("<by R1c4rdCo5t4/>",
             fontSize = 10.sp,

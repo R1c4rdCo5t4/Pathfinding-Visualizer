@@ -18,8 +18,8 @@ fun Buttons(){
     Row(
         Modifier
             .fillMaxWidth()
-            .offset(0.dp, 50.dp)
-            .background(Color.White),
+            .background(Color.White)
+            .absolutePadding(0.dp,20.dp,0.dp,20.dp),
 
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
