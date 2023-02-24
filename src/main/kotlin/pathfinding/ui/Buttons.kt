@@ -12,8 +12,7 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun Buttons(){
-    val buttons by remember { mutableStateOf(mutableListOf("START", "STOP", "CLEAR PATH", "CLEAR ALL")) }
+fun Buttons(viewModel: ViewModel){
 
     Row(
         Modifier
@@ -25,19 +24,24 @@ fun Buttons(){
     ) {
 
         DropdownButton(listOf("Dijkstra", "A*", "DFS", "BFS"))
-        buttons.forEach {
-            Column {
-                Button(onClick = {}, colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray)) {
-                    Text(it, fontFamily = FontFamily.Monospace, fontWeight = FontWeight.Bold)
-                }
 
-            }
-        }
+        CustomButton("START"){  }
+        CustomButton("STOP"){  }
+        CustomButton("DRAW"){ viewModel.changeMode(Mode.Draw) }
+        CustomButton("ERASE"){ viewModel.changeMode(Mode.Eraser) }
+        CustomButton("CLEAR PATH"){  }
+        CustomButton("CLEAR ALL"){ viewModel.clearSelected() }
+
 
 
     }
 }
-
+@Composable
+fun CustomButton(text: String, onClick: () -> Unit){
+    Button(onClick, colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray)) {
+        Text(text, fontFamily = FontFamily.Monospace, fontWeight = FontWeight.Bold)
+    }
+}
 
 @Composable
 fun DropdownButton(items: List<String>) {

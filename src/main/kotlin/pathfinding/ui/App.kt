@@ -6,19 +6,21 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.*
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Column
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.AlignmentLine
 
 
 @Composable
 @Preview
 fun App(title: String) {
+
+    val viewModel by remember { mutableStateOf(ViewModel()) }
+
     Column{
         Title(title.uppercase())
-        Buttons()
-        Grid(lines = 18, columns = 30, cellSize = 24.dp)
+        Buttons(viewModel)
+        Grid(lines = 18, columns = 30, cellSize = 24.dp, viewModel)
         Credits()
     }
 
@@ -57,4 +59,9 @@ fun Credits(){
             fontWeight = FontWeight.Thin
         )
     }
+}
+
+
+enum class Mode {
+    Draw, Eraser
 }

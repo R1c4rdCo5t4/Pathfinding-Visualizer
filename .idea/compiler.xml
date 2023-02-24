@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="16" />
+    <bytecodeTargetLevel target="16">
+      <module name="Pathfinding-Visualizer.commonMain" target="11" />
+      <module name="Pathfinding-Visualizer.commonTest" target="11" />
+      <module name="Pathfinding-Visualizer.jvmMain" target="11" />
+      <module name="Pathfinding-Visualizer.jvmTest" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>
