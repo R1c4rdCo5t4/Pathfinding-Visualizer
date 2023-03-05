@@ -61,6 +61,3 @@ fun Credits(){
 }
 
 
-enum class Mode {
-    Draw, Eraser
-}

@@ -8,7 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
+import model.algorithms.bfs
 
 
 @Composable
@@ -24,10 +26,11 @@ fun Buttons(viewModel: ViewModel){
     ) {
         DropdownButton(listOf("Dijkstra", "A*", "DFS", "BFS"))
 
-        CustomButton("START"){  }
-        CustomButton("STOP"){  }
-        CustomButton("DRAW"){ viewModel.changeMode(Mode.Draw) }
-        CustomButton("ERASE"){ viewModel.changeMode(Mode.Eraser) }
+        CustomButton("START") {
+            viewModel.bfs()
+        }
+
+        CustomButton(viewModel.mode.name.uppercase()){ viewModel.mode = viewModel.mode.next() }
         CustomButton("CLEAR PATH"){  }
         CustomButton("CLEAR ALL"){ viewModel.clearSelected() }
     }

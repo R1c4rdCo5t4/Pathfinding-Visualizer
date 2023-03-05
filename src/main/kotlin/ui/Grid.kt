@@ -10,15 +10,13 @@ import androidx.compose.ui.unit.*
 import androidx.compose.foundation.layout.Column
 import androidx.compose.ui.input.pointer.pointerInput
 import model.graph.Node
-import model.graph.State
+
 
 
 @Composable
 fun Grid(viewModel: ViewModel) {
-
     val padding = 10.dp
     Box(
-
         Modifier
             .background(Color.White)
             .pointerInput(Unit) {
@@ -31,14 +29,11 @@ fun Grid(viewModel: ViewModel) {
                     if(row !in 0 until viewModel.rows || col !in 0 until viewModel.columns){
                         return@detectDragGestures
                     }
-                    when(viewModel.mode){
-                        Mode.Draw -> {
-                            viewModel.updateNodeState(col, row, State.OBSTACLE)
-                        }
-                        Mode.Eraser -> {
-                            viewModel.updateNodeState(col, row, State.UNVISITED)
-                        }
-                    }
+
+                    viewModel.updateNodeState(col, row, viewModel.mode)
+
+
+
                 }
             }
     ) {
