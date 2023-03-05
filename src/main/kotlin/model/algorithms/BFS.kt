@@ -22,6 +22,7 @@ fun bfs(
             if (currentNode == endNode) { // end node found, backtrack the path
                 var node: Node? = endNode
                 while (node != null) {
+                    Thread.sleep(5)
                     if (node.state == State.ORIGIN) break
                     val parentPos = node.parent ?: break
                     viewModel.updateNodeState(node.position.x, node.position.y, State.PATH)

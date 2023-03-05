@@ -7,7 +7,7 @@ data class Position(val x: Int, val y: Int)
 enum class State {
     ORIGIN, DESTINATION, OBSTACLE, UNVISITED, VISITED, PATH;
 
-    private val editables get() = values().slice(0..2)
+    private val editables get() = values().slice(0..3)
 
     fun next() : State {
         val nextIdx = editables.indexOf(this) + 1
