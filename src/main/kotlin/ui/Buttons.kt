@@ -1,4 +1,4 @@
-package pathfinding.ui
+package ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -22,7 +22,6 @@ fun Buttons(viewModel: ViewModel){
 
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-
         DropdownButton(listOf("Dijkstra", "A*", "DFS", "BFS"))
 
         CustomButton("START"){  }
@@ -31,11 +30,9 @@ fun Buttons(viewModel: ViewModel){
         CustomButton("ERASE"){ viewModel.changeMode(Mode.Eraser) }
         CustomButton("CLEAR PATH"){  }
         CustomButton("CLEAR ALL"){ viewModel.clearSelected() }
-
-
-
     }
 }
+
 @Composable
 fun CustomButton(text: String, onClick: () -> Unit){
     Button(onClick, colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray)) {

@@ -1,4 +1,4 @@
-package pathfinding.ui
+package ui
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Arrangement
@@ -15,15 +15,15 @@ import androidx.compose.ui.Modifier
 @Preview
 fun App(title: String) {
 
+
     val viewModel by remember { mutableStateOf(ViewModel()) }
 
     Column{
         Title(title.uppercase())
         Buttons(viewModel)
-        Grid(lines = 18, columns = 30, cellSize = 24.dp, viewModel)
+        Grid(viewModel)
         Credits()
     }
-
 }
 
 
@@ -32,9 +32,7 @@ fun Title(title: String){
     Row(
         Modifier
             .fillMaxWidth()
-            .absolutePadding(0.dp,20.dp,0.dp,0.dp)
-        ,
-
+            .absolutePadding(0.dp,20.dp,0.dp,0.dp),
         horizontalArrangement = Arrangement.Center
     ) {
         Text(
@@ -51,7 +49,8 @@ fun Title(title: String){
 fun Credits(){
     Row(
         Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(10.dp),
         horizontalArrangement = Arrangement.Center
     ){ Text("<by R1c4rdCo5t4/>",
             fontSize = 10.sp,

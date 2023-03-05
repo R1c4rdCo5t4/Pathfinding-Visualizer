@@ -1,4 +1,4 @@
-import pathfinding.ui.App
+import ui.App
 import androidx.compose.material.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.DpSize
