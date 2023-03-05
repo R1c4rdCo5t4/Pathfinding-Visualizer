@@ -35,9 +35,7 @@ fun bfs(
             for (neighborPos in currentNode.neighbors) {
                 val neighbor = viewModel.grid[neighborPos.y][neighborPos.x]
                 if (neighbor.state != State.OBSTACLE && neighbor.state != State.VISITED) {
-                    if (neighbor.parent == null) {
-                        neighbor.parent = currentNode.position
-                    }
+                    neighbor.parent = currentNode.position
                     viewModel.updateNodeState(neighbor.position.x, neighbor.position.y, State.VISITED)
                     queue.add(neighbor)
 

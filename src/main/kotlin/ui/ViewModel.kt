@@ -31,11 +31,11 @@ class ViewModel{
         mode = newState
     }
 
-    fun clearSelected(){
-        grid = grid.map { row -> row.map{ node -> Node(node.position) }}
+    fun clearAll(){
+        grid = grid.map { row -> row.map{ node -> node.copy(state=State.UNVISITED) }}
     }
 
-    private fun reset(){
+    fun clearPath(){
         grid = grid.map { row -> row.map { node ->
             if (node.state == State.VISITED || node.state == State.PATH) node.copy(state = State.UNVISITED) else node }
         }
@@ -76,7 +76,7 @@ class ViewModel{
         val start = startNode ?: return
         val end = endNode ?: return
         println("bfs")
-        reset()
+        clearPath()
         model.algorithms.bfs(start, end, this)
     }
 }

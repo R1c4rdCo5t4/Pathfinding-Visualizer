@@ -31,8 +31,8 @@ fun Buttons(viewModel: ViewModel){
         }
 
         CustomButton(viewModel.mode.name.uppercase()){ viewModel.mode = viewModel.mode.next() }
-        CustomButton("CLEAR PATH"){  }
-        CustomButton("CLEAR ALL"){ viewModel.clearSelected() }
+        CustomButton("CLEAR PATH"){ viewModel.clearPath() }
+        CustomButton("CLEAR ALL"){ viewModel.clearAll() }
     }
 }
 
