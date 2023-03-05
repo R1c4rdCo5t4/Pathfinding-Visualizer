@@ -2,19 +2,7 @@ package model.graph
 
 import androidx.compose.ui.graphics.Color
 
-data class Position(val x: Int, val y: Int)
 
-enum class State {
-    ORIGIN, DESTINATION, OBSTACLE, UNVISITED, VISITED, PATH;
-
-    private val editables get() = values().slice(0..3)
-
-    fun next() : State {
-        val nextIdx = editables.indexOf(this) + 1
-        val modeIdx = if (nextIdx >= editables.size) 0 else nextIdx
-        return editables[modeIdx]
-    }
-}
 
 data class Node(
     val position: Position,
@@ -31,7 +19,6 @@ data class Node(
         State.UNVISITED -> Color.Gray
         State.PATH -> Color.Green
     }
-
 
     fun setNeighbors(grid: List<List<Node>>) {
         for (dx in -1..1) {

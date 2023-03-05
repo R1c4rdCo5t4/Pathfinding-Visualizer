@@ -8,13 +8,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
-import model.algorithms.bfs
+
 
 
 @Composable
 fun Buttons(viewModel: ViewModel){
+
+
+
 
     Row(
         Modifier
@@ -24,15 +26,19 @@ fun Buttons(viewModel: ViewModel){
 
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
+
         DropdownButton(listOf("Dijkstra", "A*", "DFS", "BFS"))
 
-        CustomButton("START") {
-            viewModel.bfs()
+        var txt by remember { mutableStateOf("START") }
+        val changeTxt = { txt = if (viewModel.running) "STOP" else "START" }
+        CustomButton(txt) {
+            if (!viewModel.running) viewModel.bfs()
+            viewModel.running = !viewModel.running
+            changeTxt()
         }
-
         CustomButton(viewModel.mode.name.uppercase()){ viewModel.mode = viewModel.mode.next() }
-        CustomButton("CLEAR PATH"){ viewModel.clearPath() }
-        CustomButton("CLEAR ALL"){ viewModel.clearAll() }
+        CustomButton("CLEAR PATH"){ viewModel.clearPath(); changeTxt() }
+        CustomButton("CLEAR ALL"){ viewModel.clearAll(); changeTxt() }
     }
 }
 

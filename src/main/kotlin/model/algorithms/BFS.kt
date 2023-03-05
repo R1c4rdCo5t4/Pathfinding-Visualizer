@@ -4,11 +4,13 @@ import model.graph.Node
 import model.graph.State
 import ui.ViewModel
 
+
 fun bfs(
     startNode: Node,
     endNode: Node,
     viewModel: ViewModel
 ) {
+
     val th = Thread {
         val queue = ArrayDeque<Node>()
         queue.add(startNode)
@@ -16,13 +18,15 @@ fun bfs(
         viewModel.updateNodeState(startNode.position.x, startNode.position.y, State.VISITED)
 
         while (queue.isNotEmpty()) {
-            Thread.sleep(5)
+            if(!viewModel.running) return@Thread
+            Thread.sleep(10)
             val currentNode = queue.removeFirst()
 
             if (currentNode == endNode) { // end node found, backtrack the path
                 var node: Node? = endNode
                 while (node != null) {
-                    Thread.sleep(5)
+                    if(!viewModel.running) return@Thread
+                    Thread.sleep(10)
                     if (node.state == State.ORIGIN) break
                     val parentPos = node.parent ?: break
                     viewModel.updateNodeState(node.position.x, node.position.y, State.PATH)
@@ -33,6 +37,7 @@ fun bfs(
 
             // add neighbors of the current node to the queue
             for (neighborPos in currentNode.neighbors) {
+                if(!viewModel.running) return@Thread
                 val neighbor = viewModel.grid[neighborPos.y][neighborPos.x]
                 if (neighbor.state != State.OBSTACLE && neighbor.state != State.VISITED) {
                     neighbor.parent = currentNode.position

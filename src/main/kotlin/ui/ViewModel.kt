@@ -17,6 +17,7 @@ class ViewModel{
     var grid by mutableStateOf((0 until rows).map{ row -> (0 until columns).map { col -> Node(Position(col, row)) } })
     private var startNode : Node? by mutableStateOf(null)
     private var endNode : Node? by mutableStateOf(null)
+    var running = false
 
 
     init{
@@ -33,12 +34,14 @@ class ViewModel{
 
     fun clearAll(){
         grid = grid.map { row -> row.map{ node -> node.copy(state=State.UNVISITED) }}
+        running = false
     }
 
     fun clearPath(){
         grid = grid.map { row -> row.map { node ->
             if (node.state == State.VISITED || node.state == State.PATH) node.copy(state = State.UNVISITED) else node }
         }
+        running = false
     }
 
     fun updateNodeState(col:Int, row:Int, newState: State) {
@@ -68,14 +71,12 @@ class ViewModel{
                 else n
             }
         }
-
         grid = updatedGrid.toList()
     }
 
-    fun bfs(){
+    fun bfs() {
         val start = startNode ?: return
         val end = endNode ?: return
-        println("bfs")
         clearPath()
         model.algorithms.bfs(start, end, this)
     }
