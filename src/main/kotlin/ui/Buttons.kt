@@ -27,12 +27,12 @@ fun Buttons(viewModel: ViewModel){
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
 
-        DropdownButton(listOf("Dijkstra", "A*", "DFS", "BFS"))
+        DropdownButton(viewModel.algorithms) { idx -> viewModel.algorithm = viewModel.algorithms[idx] }
 
         var txt by remember { mutableStateOf("START") }
         val changeTxt = { txt = if (viewModel.running) "STOP" else "START" }
         CustomButton(txt) {
-            if (!viewModel.running) viewModel.bfs()
+            if (!viewModel.running) viewModel.run()
             viewModel.running = !viewModel.running
             changeTxt()
         }
@@ -50,7 +50,7 @@ fun CustomButton(text: String, onClick: () -> Unit){
 }
 
 @Composable
-fun DropdownButton(items: List<String>) {
+fun DropdownButton(items: List<String>, onClick: (Int) -> Unit) {
     var expanded by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableStateOf(0) }
     Button(onClick = { expanded = !expanded }, colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray)) {
@@ -63,6 +63,7 @@ fun DropdownButton(items: List<String>) {
                 DropdownMenuItem(onClick = {
                     selectedIndex = index
                     expanded = false
+                    onClick(index)
                 }) {
                     Text(text = s)
                 }
