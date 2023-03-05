@@ -13,7 +13,7 @@ class ViewModel{
     val rows: Int = 18
     val columns: Int = 30
     val cellSize: Dp = 24.dp
-    var mode by mutableStateOf(State.VISITED)
+    var mode by mutableStateOf(State.ORIGIN)
     var grid by mutableStateOf((0 until rows).map{ row -> (0 until columns).map { col -> Node(Position(col, row)) } })
     private var startNode : Node? by mutableStateOf(null)
     private var endNode : Node? by mutableStateOf(null)
