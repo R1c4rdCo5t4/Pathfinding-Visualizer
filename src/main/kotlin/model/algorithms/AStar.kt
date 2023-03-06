@@ -1,4 +1,8 @@
 package model.algorithms
 
-class AStar {
+import ui.ViewModel
+
+fun aStar(viewModel: ViewModel) {
+
+
 }

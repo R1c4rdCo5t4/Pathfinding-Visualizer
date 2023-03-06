@@ -9,14 +9,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-
+import model.algorithms.Algorithm
 
 
 @Composable
 fun Buttons(viewModel: ViewModel){
-
-
-
 
     Row(
         Modifier
@@ -27,18 +24,20 @@ fun Buttons(viewModel: ViewModel){
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
 
-        DropdownButton(viewModel.algorithms) { idx -> viewModel.algorithm = viewModel.algorithms[idx] }
+        DropdownButton(Algorithm.values().map { it.toString() }) { idx -> viewModel.algorithm = Algorithm.values()[idx] }
 
-        var txt by remember { mutableStateOf("START") }
-        val changeTxt = { txt = if (viewModel.running) "STOP" else "START" }
-        CustomButton(txt) {
-            if (!viewModel.running) viewModel.run()
-            viewModel.running = !viewModel.running
-            changeTxt()
-        }
+        var txt by remember { mutableStateOf("") }
+        Thread {
+            while(true){
+                Thread.sleep(200)
+                txt = if (viewModel.running) "STOP" else "START"
+            }
+        }.start()
+
+        CustomButton(txt) { if (!viewModel.running) viewModel.run() else viewModel.stop() }
         CustomButton(viewModel.mode.name.uppercase()){ viewModel.mode = viewModel.mode.next() }
-        CustomButton("CLEAR PATH"){ viewModel.clearPath(); changeTxt() }
-        CustomButton("CLEAR ALL"){ viewModel.clearAll(); changeTxt() }
+        CustomButton("CLEAR PATH"){ viewModel.clearPath()}
+        CustomButton("CLEAR ALL"){ viewModel.clearAll() }
     }
 }
 

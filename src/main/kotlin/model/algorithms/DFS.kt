@@ -4,46 +4,27 @@ import model.graph.Node
 import model.graph.State
 import ui.ViewModel
 
-fun dfs(
-    startNode: Node,
-    endNode: Node,
-    viewModel: ViewModel
-) {
-    val th = Thread {
-        val stack = mutableListOf<Node>()
-        stack.add(startNode)
-        startNode.parent = null
-        viewModel.updateNodeState(startNode.position.x, startNode.position.y, State.VISITED)
 
-        while (stack.isNotEmpty()) {
-            if(!viewModel.running) return@Thread
-            Thread.sleep(10)
-            val currentNode = stack.removeAt(stack.lastIndex)
+fun dfs(viewModel: ViewModel) {
+    val start = viewModel.startNode ?: return
+    val end = viewModel.endNode ?: return
+    val stack = mutableListOf<Node>()
+    stack.add(start)
+    start.parent = null
+    viewModel.updateNodeState(start, State.VISITED)
 
-            if (currentNode == endNode) { // end node found, backtrack the path
-                var node: Node? = endNode
-                while (node != null) {
-                    if(!viewModel.running) return@Thread
-                    Thread.sleep(10)
-                    if (node.state == State.ORIGIN) break
-                    val parentPos = node.parent ?: break
-                    viewModel.updateNodeState(node.position.x, node.position.y, State.PATH)
-                    node = viewModel.grid[parentPos.y][parentPos.x]
-                }
-                return@Thread
-            }
+    while (stack.isNotEmpty()) {
+        delay()
+        val currentNode = stack.removeAt(stack.lastIndex)
+        if (currentNode == end) { // end node found, backtrack the path
+            backtrackPath(end, viewModel)
+            return
+        }
 
-            // add neighbors of the current node to the stack
-            for (neighborPos in currentNode.neighbors.reversed()) {
-                if(!viewModel.running) return@Thread
-                val neighbor = viewModel.grid[neighborPos.y][neighborPos.x]
-                if (neighbor.state != State.OBSTACLE && neighbor.state != State.VISITED) {
-                    neighbor.parent = currentNode.position
-                    viewModel.updateNodeState(neighbor.position.x, neighbor.position.y, State.VISITED)
-                    stack.add(neighbor)
-                }
-            }
+        searchNeighbors(currentNode, viewModel){ neighbor: Node ->
+            neighbor.parent = currentNode.position
+            viewModel.updateNodeState(neighbor, State.VISITED)
+            stack.add(neighbor)
         }
     }
-    th.start()
 }

@@ -6,7 +6,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 
 
-fun main() = application(exitProcessOnExit = false) {
+fun main() = application(exitProcessOnExit = true) {
     val title = "Pathfinding Visualizer"
     Window(
         onCloseRequest = ::exitApplication,

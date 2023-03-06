@@ -1,4 +1,8 @@
 package model.algorithms
 
-class Dijkstra {
+import ui.ViewModel
+
+fun dijkstra(viewModel: ViewModel) {
+
+
 }

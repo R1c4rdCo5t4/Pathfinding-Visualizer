@@ -3,6 +3,9 @@ package ui
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import model.algorithms.Algorithm
+import model.algorithms.bfs
+import model.algorithms.dfs
 import model.graph.*
 import model.graph.State
 
@@ -15,11 +18,11 @@ class ViewModel {
     val cellSize: Dp = 24.dp
     var mode by mutableStateOf(State.ORIGIN)
     var grid by mutableStateOf((0 until rows).map { row -> (0 until columns).map { col -> Node(Position(col, row)) } })
-    private var startNode: Node? by mutableStateOf(null)
-    private var endNode: Node? by mutableStateOf(null)
+    var startNode: Node? by mutableStateOf(null)
+    var endNode: Node? by mutableStateOf(null)
+    var algorithm = Algorithm.BFS
     var running = false
-    val algorithms = listOf("BFS", "DFS", "A*", "Dijkstra")
-    var algorithm = algorithms[0]
+    private var th : Thread? = null
 
 
     init {
@@ -30,13 +33,9 @@ class ViewModel {
         }
     }
 
-    fun changeMode(newState: State) {
-        mode = newState
-    }
-
     fun clearAll() {
         grid = grid.map { row -> row.map { node -> node.copy(state = State.UNVISITED) } }
-        running = false
+        stop()
     }
 
     fun clearPath() {
@@ -45,12 +44,16 @@ class ViewModel {
                 if (node.state == State.VISITED || node.state == State.PATH) node.copy(state = State.UNVISITED) else node
             }
         }
-        running = false
+        stop()
     }
 
-    fun updateNodeState(col: Int, row: Int, newState: State) {
+    fun updateNodeState(node: Node, newState: State){
+        updateNodeState(node.position.x, node.position.y, newState)
+    }
 
-        val position = Position(col, row)
+    fun updateNodeState(x:Int, y: Int, newState: State) {
+
+        val position = Position(x, y)
         val updatedGrid = grid.map { r ->
             r.map { n ->
                 if (n.position == position) {
@@ -61,11 +64,11 @@ class ViewModel {
 
                     val startPos = startNode?.position
                     val endPos = endNode?.position
-                    val pos = Position(col, row)
-                    if (newState == State.ORIGIN && startPos != pos) {
+                    if (newState == State.ORIGIN && startPos != position) {
                         if (startPos != null) grid[startPos.y][startPos.x].state = State.UNVISITED
                         startNode = node
-                    } else if (newState == State.DESTINATION && endPos != pos) {
+                    }
+                    else if (newState == State.DESTINATION && endPos != position) {
                         if (endPos != null) grid[endPos.y][endPos.x].state = State.UNVISITED
                         endNode = node
                     }
@@ -78,15 +81,24 @@ class ViewModel {
 
 
     fun run() {
-        val start = startNode ?: return
-        val end = endNode ?: return
         clearPath()
-
-        when (algorithm) {
-            "BFS" -> model.algorithms.bfs(start, end, this)
-            "DFS" -> model.algorithms.dfs(start, end, this)
-            else -> return
+        running = true
+        th = Thread {
+            try {
+                when (algorithm) {
+                    Algorithm.BFS -> bfs(this)
+                    Algorithm.DFS -> dfs(this)
+                    else -> return@Thread
+                }
+            }
+            catch(e: InterruptedException){ }
+            running = false
         }
+        th?.start()
     }
 
+    fun stop(){
+        th?.interrupt()
+        running = false
+    }
 }

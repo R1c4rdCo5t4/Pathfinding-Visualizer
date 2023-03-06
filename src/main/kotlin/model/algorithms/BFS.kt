@@ -3,54 +3,32 @@ package model.algorithms
 import model.graph.Node
 import model.graph.State
 import ui.ViewModel
+import java.util.ArrayDeque
 
 
-fun bfs(
-    startNode: Node,
-    endNode: Node,
-    viewModel: ViewModel
-) {
+fun bfs(viewModel: ViewModel) {
+    val start = viewModel.startNode ?: return
+    val end = viewModel.endNode ?: return
+    val queue = ArrayDeque<Node>()
+    queue.add(start)
+    start.parent = null
+    viewModel.updateNodeState(start, State.VISITED)
 
-    val th = Thread {
-        val queue = ArrayDeque<Node>()
-        queue.add(startNode)
-        startNode.parent = null
-        viewModel.updateNodeState(startNode.position.x, startNode.position.y, State.VISITED)
+    while (queue.isNotEmpty()) {
+        delay()
+        val currentNode = queue.removeFirst()
+        if (currentNode == end) { // end node found, backtrack the path
+            backtrackPath(currentNode, viewModel)
+            return
+        }
 
-        while (queue.isNotEmpty()) {
-            if(!viewModel.running) return@Thread
-            Thread.sleep(10)
-            val currentNode = queue.removeFirst()
-
-            if (currentNode == endNode) { // end node found, backtrack the path
-                var node: Node? = endNode
-                while (node != null) {
-                    if(!viewModel.running) return@Thread
-                    Thread.sleep(10)
-                    if (node.state == State.ORIGIN) break
-                    val parentPos = node.parent ?: break
-                    viewModel.updateNodeState(node.position.x, node.position.y, State.PATH)
-                    node = viewModel.grid[parentPos.y][parentPos.x]
-                }
-                return@Thread
-            }
-
-            // add neighbors of the current node to the queue
-            for (neighborPos in currentNode.neighbors) {
-                if(!viewModel.running) return@Thread
-                val neighbor = viewModel.grid[neighborPos.y][neighborPos.x]
-                if (neighbor.state != State.OBSTACLE && neighbor.state != State.VISITED) {
-                    neighbor.parent = currentNode.position
-                    viewModel.updateNodeState(neighbor.position.x, neighbor.position.y, State.VISITED)
-                    queue.add(neighbor)
-
-                }
-            }
+        searchNeighbors(currentNode, viewModel){ neighbor: Node ->
+            neighbor.parent = currentNode.position
+            viewModel.updateNodeState(neighbor, State.VISITED)
+            queue.add(neighbor)
         }
     }
-    th.start()
 }
-
 
 
 
